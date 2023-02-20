@@ -3624,7 +3624,7 @@ extern "C"
  80018c6:	9a22      	ldr	r2, [sp, #136]	; 0x88
  80018c8:	f88d 3069 	strb.w	r3, [sp, #105]	; 0x69
  80018cc:	9218      	str	r2, [sp, #96]	; 0x60
-					if(open) //オープン
+					if(open
  80018ce:	f89d 306c 	ldrb.w	r3, [sp, #108]	; 0x6c
  80018d2:	9a23      	ldr	r2, [sp, #140]	; 0x8c
  80018d4:	f88d 1068 	strb.w	r1, [sp, #104]	; 0x68
