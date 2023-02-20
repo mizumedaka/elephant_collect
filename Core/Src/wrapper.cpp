@@ -15,11 +15,11 @@ extern "C"
 {
 	extern TIM_HandleTypeDef htim1;
 
-	void main_cpp(CAN_HandleTypeDef *const hcan)
+	void main_cpp()
 		{
-			*hcan = Implement::crslib_default_can(CAN1);
-			HAL_CAN_DeInit(hcan);
-			CanManager can_manager{hcan};
+			auto hcan = Implement::crslib_default_hcan(CAN1);
+			HAL_CAN_DeInit(&hcan);
+			CanManager can_manager{&hcan};
 
 			FilterManager::dynamic_initialize();
 
@@ -59,7 +59,7 @@ extern "C"
 
 			FilterManager::config_filter_bank(15, filter_arg1, filter_arg2);
 
-			HAL_CAN_Start(hcan);
+			HAL_CAN_Start(&hcan);
 
 			//CH1,2,3,4 は PA8,9,10,11 に 対応
 
@@ -69,7 +69,7 @@ extern "C"
 			HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
 			HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4);
 
-			volatile int dummy = 0;
+			[[maybe_unused]] volatile int dummy = 0;
 			while(true)
 			{
 				dummy = 1;
@@ -80,30 +80,30 @@ extern "C"
 					constexpr unsigned int close_duty = 300;
 
 					if(open) //オープン
-						{
-							__HAL_TIM_SET_COMPARE(&htim1, ch1, open_duty);
-							__HAL_TIM_SET_COMPARE(&htim1, ch2, open_duty);
-						}
+					{
+						__HAL_TIM_SET_COMPARE(&htim1, ch1, open_duty);
+						__HAL_TIM_SET_COMPARE(&htim1, ch2, open_duty);
+					}
 					else //クローズ
-						{
-							__HAL_TIM_SET_COMPARE(&htim1, ch1, close_duty);
-							__HAL_TIM_SET_COMPARE(&htim1, ch2, close_duty);
-						}
+					{
+						__HAL_TIM_SET_COMPARE(&htim1, ch1, close_duty);
+						__HAL_TIM_SET_COMPARE(&htim1, ch2, close_duty);
+					}
 				};
 
 				bool open;
 
 				if(!can_manager.letterbox0.empty())
-					{
-						RxFrame rx_frame{};
-						can_manager.letterbox0.receive(rx_frame);
-						open = rx_frame.data[0];
-					}
+				{
+					RxFrame rx_frame{};
+					can_manager.letterbox0.receive(rx_frame);
+					open = rx_frame.data[0];
 
-				// 上段
-				open_or_close(open, TIM_CHANNEL_1, TIM_CHANNEL_2);
-				// 下段
-				open_or_close(open, TIM_CHANNEL_3, TIM_CHANNEL_4);
+					// 上段
+					open_or_close(open, TIM_CHANNEL_1, TIM_CHANNEL_2);
+					// 下段
+					open_or_close(open, TIM_CHANNEL_3, TIM_CHANNEL_4);
+				}
 			}
 		}
 }

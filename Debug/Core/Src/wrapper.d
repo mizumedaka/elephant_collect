@@ -26,6 +26,8 @@ Core/Src/wrapper.o: ../Core/Src/wrapper.cpp \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  /home/crs2022/STM32CubeIDE/workspace_1.11.2/elephant_collect/CRSLib/Can/RM0008/include/pillarbox.hpp \
  /home/crs2022/STM32CubeIDE/workspace_1.11.2/elephant_collect/CRSLib/Can/RM0008/include/letterbox.hpp \
  /home/crs2022/STM32CubeIDE/workspace_1.11.2/elephant_collect/CRSLib/include/utility.hpp \
@@ -64,6 +66,8 @@ Core/Src/wrapper.o: ../Core/Src/wrapper.cpp \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 /home/crs2022/STM32CubeIDE/workspace_1.11.2/elephant_collect/CRSLib/Can/RM0008/include/pillarbox.hpp:
 /home/crs2022/STM32CubeIDE/workspace_1.11.2/elephant_collect/CRSLib/Can/RM0008/include/letterbox.hpp:
 /home/crs2022/STM32CubeIDE/workspace_1.11.2/elephant_collect/CRSLib/include/utility.hpp:
