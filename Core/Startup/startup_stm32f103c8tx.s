@@ -61,7 +61,7 @@ defined in linker script */
   .type Reset_Handler, %function
 Reset_Handler:
 
-/* Copy the data segment initializers from flash to SRAM */
+/* Copy the data segment initializers from flash to SRAM *2
   ldr r0, =_sdata
   ldr r1, =_edata
   ldr r2, =_sidata

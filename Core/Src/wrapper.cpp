@@ -10,6 +10,8 @@ using namespace CRSLib::IntegerTypes;
 using namespace CRSLib::Can;
 using namespace CRSLib::Can::RM0008;
 
+//volatile bool live_expr_open = false;
+
 
 extern "C"
 {
@@ -18,7 +20,10 @@ extern "C"
 	void main_cpp()
 		{
 			auto hcan = Implement::crslib_default_hcan(CAN1);
+			hcan.Init.Mode = CAN_MODE_SILENT_LOOPBACK;
 			HAL_CAN_DeInit(&hcan);
+			HAL_CAN_Init(&hcan);
+
 			CanManager can_manager{&hcan};
 
 			FilterManager::dynamic_initialize();
@@ -77,30 +82,49 @@ extern "C"
 				constexpr auto open_or_close = [](const bool open, const auto ch1, const auto ch2)
 				{
 					constexpr unsigned int open_duty = 1100;
-					constexpr unsigned int close_duty = 300;
+					constexpr unsigned int close_duty = 100;
 
 					if(open) //オープン
 					{
 						__HAL_TIM_SET_COMPARE(&htim1, ch1, open_duty);
+						HAL_Delay(1000);
 						__HAL_TIM_SET_COMPARE(&htim1, ch2, open_duty);
 					}
 					else //クローズ
 					{
 						__HAL_TIM_SET_COMPARE(&htim1, ch1, close_duty);
+						HAL_Delay(1000);
 						__HAL_TIM_SET_COMPARE(&htim1, ch2, close_duty);
 					}
 				};
 
-				bool open;
+				/*if(can_manager.pillarbox.not_full())
+				{
+					TxFrame tx_frame{};
+					tx_frame.header.dlc = 1;
+					tx_frame.data[0] = live_expr_open;
+
+					can_manager.pillarbox.post(0x500, tx_frame);
+				}*/
 
 				if(!can_manager.letterbox0.empty())
 				{
 					RxFrame rx_frame{};
 					can_manager.letterbox0.receive(rx_frame);
-					open = rx_frame.data[0];
+					const bool open = rx_frame.data[0];
+					//const bool open = live_expr_open;
 
 					// 上段
 					open_or_close(open, TIM_CHANNEL_1, TIM_CHANNEL_2);
+
+				}
+				if(!can_manager.letterbox1.empty())
+				{
+					RxFrame rx_frame{};
+					can_manager.letterbox1.receive(rx_frame);
+					const bool open = rx_frame.data[0];
+					//const bool open = live_expr_open;
+
 					// 下段
 					open_or_close(open, TIM_CHANNEL_3, TIM_CHANNEL_4);
 				}
